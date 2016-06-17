@@ -1,0 +1,21 @@
+* ~d12-hs-env~
+
+Environment helpers that are used in personal projects.
+
+Currently there is only one module =Env= that exposes two functions: ~env~ and
+~envMaybe~.
+
+#+BEGIN_SRC haskell
+λ> :t env
+env :: (MonadThrow m, MonadIO m) => Text -> m Text
+λ> :t envMaybe
+envMaybe :: MonadIO m => Text -> m (Maybe Text)
+λ> env "XDG_CONFIG_HOME"
+"/Users/d12frosted/.environment"
+λ> env "FALSE"
+*** Exception: Could not find value of $FALSE in environment.
+λ> envMaybe "FALSE"
+Nothing
+λ> envMaybe "XDG_CONFIG_HOME"
+Just "/Users/d12frosted/.environment"
+#+END_SRC

@@ -3,7 +3,7 @@
 {-# LANGUAGE NoImplicitPrelude  #-}
 {-# LANGUAGE OverloadedStrings  #-}
 
-module Env ( env
+module Env ( getEnv
            , envMaybe
            , envRead
            , read
@@ -56,8 +56,8 @@ instance Show EnvironmentException where
 -- | Get value of environment variable.
 --
 -- Throws EnvVariableNotFoundException.
-env :: (MonadThrow m, MonadIO m) => Text -> m Text
-env key =
+getEnv :: (MonadThrow m, MonadIO m) => Text -> m Text
+getEnv key =
   envMaybe key >>=
   \case
      Nothing -> throwM $ EnvVarNotFound key

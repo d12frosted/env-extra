@@ -3,7 +3,8 @@
 {-# LANGUAGE NoImplicitPrelude  #-}
 {-# LANGUAGE OverloadedStrings  #-}
 
-module Env ( getEnv
+module Env ( setEnv
+           , getEnv
            , envMaybe
            , envRead
            , read
@@ -35,7 +36,7 @@ import           Data.Text
 import           Data.Text.Read
 import           Data.Typeable
 import           Prelude                hiding (read)
-import           System.Environment     (lookupEnv)
+import qualified System.Environment     as E (lookupEnv, setEnv)
 import           Text.Read              (readEither)
 
 --------------------------------------------------------------------------------
@@ -53,6 +54,12 @@ instance Show EnvironmentException where
 --------------------------------------------------------------------------------
 -- * Environment lookup functions
 
+-- | Set value of environment variable.
+--
+-- Thorws IOException.
+setEnv :: (MonadThrow m, MonadIO m) => Text -> Text -> m ()
+setEnv k v = liftIO $ E.setEnv (unpack k) (unpack v)
+
 -- | Get value of environment variable.
 --
 -- Throws EnvVariableNotFoundException.
@@ -65,7 +72,7 @@ getEnv key =
 
 -- | Get value of environment variable.
 envMaybe :: (MonadIO m) => Text -> m (Maybe Text)
-envMaybe key = liftIO $ liftM (pack <$>) (lookupEnv (unpack key))
+envMaybe key = liftIO $ liftM (pack <$>) (E.lookupEnv (unpack key))
 
 -- | Get value of environment variable and parse it using specific reader.
 envRead :: (MonadIO m) => Reader a -> Text -> m (Maybe a)

@@ -18,7 +18,7 @@ module Env ( setEnv
 
            -- * Data types
            , EnvironmentException(..)
-           , Reader(..)
+           , Reader
            ) where
 
 --------------------------------------------------------------------------------

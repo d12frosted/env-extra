@@ -6,10 +6,12 @@ Currently there is only one module =Env= that exposes two functions: ~env~ and
 ~envMaybe~.
 
 #+BEGIN_SRC haskell
-λ> :t env
-env :: (MonadThrow m, MonadIO m) => Text -> m Text
+λ> :t getEnv
+getEnv :: (MonadThrow m, MonadIO m) => Text -> m Text
 λ> :t envMaybe
 envMaybe :: MonadIO m => Text -> m (Maybe Text)
+λ> :t envRead
+envRead :: MonadIO m => Reader a -> Text -> m (Maybe a)
 λ> env "XDG_CONFIG_HOME"
 "/Users/d12frosted/.environment"
 λ> env "FALSE"
@@ -18,4 +20,12 @@ envMaybe :: MonadIO m => Text -> m (Maybe Text)
 Nothing
 λ> envMaybe "XDG_CONFIG_HOME"
 Just "/Users/d12frosted/.environment"
+λ getEnv "Number"
+"10"
+λ envRead decimal "Number"
+Just 10
+λ envRead hexadecimal "Number"
+Just 16
+λ envRead hexadecimal "$HOME"
+Nothing
 #+END_SRC

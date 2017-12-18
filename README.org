@@ -6,26 +6,38 @@ Currently there is only one module =Env= that exposes two functions: ~env~ and
 ~envMaybe~.
 
 #+BEGIN_SRC haskell
-λ> :t getEnv
-getEnv :: (MonadThrow m, MonadIO m) => Text -> m Text
-λ> :t envMaybe
-envMaybe :: MonadIO m => Text -> m (Maybe Text)
-λ> :t envRead
-envRead :: MonadIO m => Reader a -> Text -> m (Maybe a)
-λ> env "XDG_CONFIG_HOME"
-"/Users/d12frosted/.environment"
-λ> env "FALSE"
-*** Exception: Could not find value of $FALSE in environment.
-λ> envMaybe "FALSE"
-Nothing
-λ> envMaybe "XDG_CONFIG_HOME"
-Just "/Users/d12frosted/.environment"
-λ getEnv "Number"
-"10"
-λ envRead decimal "Number"
-Just 10
-λ envRead hexadecimal "Number"
-Just 16
-λ envRead hexadecimal "$HOME"
-Nothing
+  λ> :t getEnv
+  getEnv :: (MonadThrow m, MonadIO m) => Text -> m Text
+  λ> :t envMaybe
+  envMaybe :: MonadIO m => Text -> m (Maybe Text)
+  λ> :t envRead
+  envRead :: MonadIO m => Reader a -> Text -> m (Maybe a)
+  λ> env "XDG_CONFIG_HOME"
+  "/Users/d12frosted/.environment"
+  λ> env "FALSE"
+  *** Exception: Could not find value of $FALSE in environment.
+  λ> envMaybe "FALSE"
+  Nothing
+  λ> envMaybe "XDG_CONFIG_HOME"
+  Just "/Users/d12frosted/.environment"
+  λ getEnv "Number"
+  "10"
+  λ envRead decimal "Number"
+  Just 10
+  λ envRead hexadecimal "Number"
+  Just 16
+  λ envRead hexadecimal "$HOME"
+  Nothing
+#+END_SRC
+
+** Using with ~stack~
+
+Just add =d12-hs-env= to =stack.yaml= file.
+
+#+BEGIN_SRC yaml
+  packages:
+  - '.'
+  - location:
+      git: https://github.com/d12frosted/d12-hs-env
+      commit: 21f314c722c31c965c3e4bfd9a77eb4a84341c32
 #+END_SRC

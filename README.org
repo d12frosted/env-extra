@@ -35,9 +35,7 @@ Currently there is only one module =Env= that exposes two functions: ~env~ and
 Just add =d12-hs-env= to =stack.yaml= file.
 
 #+BEGIN_SRC yaml
-  packages:
-  - '.'
-  - location:
-      git: https://github.com/d12frosted/d12-hs-env
-      commit: 21f314c722c31c965c3e4bfd9a77eb4a84341c32
+  extra-deps:
+  - git: https://github.com/d12frosted/d12-hs-env
+    commit: 6ad7e35254c329f2325366f3ce51d76e95700199
 #+END_SRC

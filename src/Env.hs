@@ -22,10 +22,10 @@ module Env ( setEnv
            ) where
 
 --------------------------------------------------------------------------------
--- * Internal imports
+-- Internal imports
 
 --------------------------------------------------------------------------------
--- * External imports
+-- External imports
 
 import           Control.Exception
 import           Control.Monad
@@ -40,7 +40,7 @@ import qualified System.Environment     as E (lookupEnv, setEnv)
 import           Text.Read              (readEither)
 
 --------------------------------------------------------------------------------
--- * EnvironmentException definition
+-- EnvironmentException definition
 
 data EnvironmentException =
   EnvVarNotFound Text
@@ -52,13 +52,16 @@ instance Show EnvironmentException where
   show (EnvVarNotFound var) = "Could not find value of $" ++ unpack var ++ " in environment."
 
 --------------------------------------------------------------------------------
--- * Environment lookup functions
+-- Setting value
 
 -- | Set value of environment variable.
 --
 -- Thorws IOException.
 setEnv :: (MonadThrow m, MonadIO m) => Text -> Text -> m ()
 setEnv k v = liftIO $ E.setEnv (unpack k) (unpack v)
+
+--------------------------------------------------------------------------------
+-- Getting value
 
 -- | Get value of environment variable.
 --

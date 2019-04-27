@@ -2,7 +2,7 @@ name:                d12-hs-env
 version:             0.1.1.0
 synopsis:            Env helpers for my personal projects
 description:         Please see README.org
-homepage:            https://github.com/d12frosted/d12-hs-env
+homepage:            https://gitlab.com/d12frosted/d12-hs-env
 license:             MIT
 license-file:        LICENSE
 author:              Boris Buliga
@@ -24,4 +24,4 @@ library
 
 source-repository head
   type:     git
-  location: https://github.com/d12frosted/d12-hs-env
+  location: https://gitlab.com/d12frosted/d12-hs-env

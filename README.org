@@ -39,5 +39,5 @@ Just add =d12-hs-env= to =stack.yaml= file.
 #+BEGIN_SRC yaml
   extra-deps:
   - git: https://github.com/d12frosted/d12-hs-env
-    commit: 6ad7e35254c329f2325366f3ce51d76e95700199
+    commit: 0bb28e2df86befd7cfdfd80fe4873ecc36a9ff14
 #+END_SRC

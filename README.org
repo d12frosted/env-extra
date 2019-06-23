@@ -38,6 +38,6 @@ Just add =d12-hs-env= to =stack.yaml= file.
 
 #+BEGIN_SRC yaml
   extra-deps:
-  - git: https://github.com/d12frosted/d12-hs-env
+  - git: https://gitlab.com/d12frosted/d12-hs-env
     commit: 0bb28e2df86befd7cfdfd80fe4873ecc36a9ff14
 #+END_SRC

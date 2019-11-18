@@ -9,9 +9,9 @@ Currently there is only one module =Env= that exposes two functions: ~env~ and
 
 #+BEGIN_SRC haskell
   λ> :t getEnv
-  getEnv :: (MonadThrow m, MonadIO m) => Text -> m Text
+  getEnv :: (MonadThrow m, MonadIO m, IsString a) => Text -> m a
   λ> :t envMaybe
-  envMaybe :: MonadIO m => Text -> m (Maybe Text)
+  envMaybe :: (MonadIO m, IsString a) => Text -> m (Maybe a)
   λ> :t envRead
   envRead :: MonadIO m => Reader a -> Text -> m (Maybe a)
   λ> env "XDG_CONFIG_HOME"
@@ -39,5 +39,5 @@ Just add =d12-hs-env= to =stack.yaml= file.
 #+BEGIN_SRC yaml
   extra-deps:
   - git: https://gitlab.com/d12frosted/d12-hs-env
-    commit: 0bb28e2df86befd7cfdfd80fe4873ecc36a9ff14
+    commit: 76f3e773f1aa0b2c7f56d6e76d8bb7ca01bd0ccc
 #+END_SRC

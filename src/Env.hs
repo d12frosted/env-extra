@@ -1,7 +1,12 @@
+--------------------------------------------------------------------------------
+
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE LambdaCase         #-}
 {-# LANGUAGE NoImplicitPrelude  #-}
 {-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE TupleSections      #-}
+
+--------------------------------------------------------------------------------
 
 module Env ( setEnv
            , getEnv
@@ -22,10 +27,6 @@ module Env ( setEnv
            ) where
 
 --------------------------------------------------------------------------------
--- Internal imports
-
---------------------------------------------------------------------------------
--- External imports
 
 import           Control.Exception
 import           Control.Monad
@@ -42,7 +43,7 @@ import           Text.Read              (readEither)
 --------------------------------------------------------------------------------
 -- EnvironmentException definition
 
-data EnvironmentException =
+newtype EnvironmentException =
   EnvVarNotFound Text
   deriving (Typeable)
 
@@ -75,18 +76,20 @@ getEnv key =
 
 -- | Get value of environment variable.
 envMaybe :: (MonadIO m) => Text -> m (Maybe Text)
-envMaybe key = liftIO $ liftM (pack <$>) (E.lookupEnv (unpack key))
+envMaybe key = liftIO $ fmap (pack <$>) (E.lookupEnv (unpack key))
 
 -- | Get value of environment variable and parse it using specific reader.
 envRead :: (MonadIO m) => Reader a -> Text -> m (Maybe a)
-envRead r = fmap (join . fmap ((fmap fst . fromRight) . r)) . envMaybe
+envRead r = fmap (((fmap fst . fromRight) . r) =<<) . envMaybe
 
 -- | Generic reader for readable values.
 --
 -- Keep in mind that it's always better from performance view to use specific
 -- Reader functions like @'decimal'@ instead of this generic one.
 read :: Read a => Reader a
-read = fmap (\v -> (v, "")) . readEither . unpack
+read = fmap (, "") . readEither . unpack
 
 fromRight :: Either a b -> Maybe b
 fromRight = either (const Nothing) Just
+
+--------------------------------------------------------------------------------

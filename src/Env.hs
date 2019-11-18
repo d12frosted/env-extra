@@ -33,6 +33,7 @@ import           Control.Monad
 import           Control.Monad.Catch    (MonadThrow (..))
 import           Control.Monad.IO.Class
 import           Data.Maybe
+import           Data.String            (IsString, fromString)
 import           Data.Text
 import           Data.Text.Read
 import           Data.Typeable
@@ -67,7 +68,7 @@ setEnv k v = liftIO $ E.setEnv (unpack k) (unpack v)
 -- | Get value of environment variable.
 --
 -- Throws EnvVariableNotFoundException.
-getEnv :: (MonadThrow m, MonadIO m) => Text -> m Text
+getEnv :: ( MonadThrow m, MonadIO m, IsString a ) => Text -> m a
 getEnv key =
   envMaybe key >>=
   \case
@@ -75,8 +76,8 @@ getEnv key =
      Just v -> return v
 
 -- | Get value of environment variable.
-envMaybe :: (MonadIO m) => Text -> m (Maybe Text)
-envMaybe key = liftIO $ fmap (pack <$>) (E.lookupEnv (unpack key))
+envMaybe :: ( MonadIO m, IsString a ) => Text -> m (Maybe a)
+envMaybe key = liftIO $ fmap (fromString <$>) (E.lookupEnv (unpack key))
 
 -- | Get value of environment variable and parse it using specific reader.
 envRead :: (MonadIO m) => Reader a -> Text -> m (Maybe a)

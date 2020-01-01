@@ -1,43 +1,79 @@
 * ~env-extra~
 
-[[https://travis-ci.org/d12frosted/d12-hs-env.svg?branch=master][file:https://travis-ci.org/d12frosted/d12-hs-env.svg?branch=master]]
+[[https://github.com/d12frosted/env-extra/workflows/CI/badge.svg][file:https://github.com/d12frosted/env-extra/workflows/CI/badge.svg]]
 
 Safe helpers for accessing and modifying environment variables.
 
-Currently there is only one module =Env= that exposes two functions: ~env~ and
-~envMaybe~.
+In order to use functions from this package, just import
+=System.Environment.Extra= module.
 
-#+BEGIN_SRC haskell
-  λ> :t getEnv
-  getEnv :: (MonadThrow m, MonadIO m, IsString a) => Text -> m a
-  λ> :t envMaybe
-  envMaybe :: (MonadIO m, IsString a) => Text -> m (Maybe a)
-  λ> :t envRead
-  envRead :: MonadIO m => Reader a -> Text -> m (Maybe a)
-  λ> env "XDG_CONFIG_HOME"
-  "/Users/d12frosted/.environment"
-  λ> env "FALSE"
-  *** Exception: Could not find value of $FALSE in environment.
-  λ> envMaybe "FALSE"
+** Setting environment variables
+
+#+begin_src haskell
+>>> :t setEnv
+(MonadThrow m, MonadIO m) => Text -> Text -> m ()
+>>> setEnv "NAME" "Boris"
+>>> setEnv "AGE" "12"
+#+end_src
+
+** Reading environment variables
+
+When it comes to reading environment variables there are three functions you
+should choose from:
+
+- =getEnv= - the lifted and unsafe version of =System.Environment.lookupEnv=
+  that works in any =MonadThrow= and =MonadIO= monad and allows one to get any
+  =IsString= value. When variable not found, an exception is thrown.
+
+  #+begin_src haskell
+    >>> getEnv "NAME"
+    *** Exception: Could not find value of $NAME in environment.
+    >>> getEnv "HOME"
+    "/Users/d12frosted"
+  #+end_src
+
+- =envMaybe= - the lifted version of =System.Environment.lookupEnv= that returns
+  any =IsString= value.
+
+  #+begin_src haskell
+  >>> getEnv "NAME"
   Nothing
-  λ> envMaybe "XDG_CONFIG_HOME"
-  Just "/Users/d12frosted/.environment"
-  λ getEnv "Number"
-  "10"
-  λ envRead decimal "Number"
-  Just 10
-  λ envRead hexadecimal "Number"
-  Just 16
-  λ envRead hexadecimal "$HOME"
-  Nothing
-#+END_SRC
+  >>> getEnv "HOME"
+  Just "/Users/d12frosted"
+  #+end_src
+
+- =envRead= - the lifted version of =System.Environment.lookupEnv= that allows
+  one to provide a parser (reader) for that value.
+
+  #+BEGIN_SRC haskell
+    >>> setEnv "AGE" "10"
+    >>> envMaybe "AGE"
+    Just "10"
+    >>> envRead decimal "AGE"
+    Just 10
+    >>> envRead hexadecimal "AGE"
+    Just 16
+    >>> envRead hexadecimal "HOME"
+    Nothing
+  #+END_SRC
+
+Both =getEnv= and =envMaybe= return an =IsString= value, which can come handy in
+many scenarios. In the following example =getEnv= accepts =Text= value, while
+=putStrLn= accepts =String= value and =getEnv= chains in both cases.
+
+#+begin_src haskell
+>>> getEnv "WHAAT" >>= getEnv
+"/Users/d12frosted"
+>>> getEnv "WHAAT" >>= putStrLn
+HOME
+#+end_src
 
 ** Using with ~stack~
 
-Just add =d12-hs-env= to =stack.yaml= file.
+Just add =env-extra= to =stack.yaml= file.
 
 #+BEGIN_SRC yaml
   extra-deps:
-  - git: https://github.com/d12frosted/d12-hs-env
+  - git: https://github.com/d12frosted/env-extra
     commit: 76f3e773f1aa0b2c7f56d6e76d8bb7ca01bd0ccc
 #+END_SRC

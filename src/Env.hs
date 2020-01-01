@@ -1,3 +1,35 @@
+{-|
+Module      : System.Environment.Safe
+Description : Safe version of 'E.setEnv' and 'E.lookupEnv' with some bells.
+Copyright   : (c) Boris Buliga, 2016-2020
+License     : MIT
+Maintainer  : boris@d12frosted.io
+Stability   : experimental
+Portability : POSIX
+
+The module defines function 'setEnv' - a lifted version of 'E.setEnv' that works
+with 'Text' input and various safe versions of 'E.lookupEnv' that allow one to
+get any 'IsString' ('getEnv' and 'envMaybe') or even provide a 'Reader' to parse
+the value ('envRead')
+
+>>> getEnv "HOME"
+"/Users/d12frosted"
+>>> getEnv "WHAAT"
+*** Exception: Could not find value of $WHAAT in environment.
+>>> setEnv "WHAAT" "HOME"
+>>> getEnv "WHAAT"
+"HOME"
+>>> getEnv "WHAAT" >>= getEnv
+"/Users/d12frosted"
+>>> getEnv "WHAAT" >>= putStrLn
+HOME
+>>> setEnv "AGE" "12"
+>>> envMaybe "AGE"
+Just "12"
+>>> envRead decimal "AGE"
+Just 12
+-}
+
 --------------------------------------------------------------------------------
 
 {-# LANGUAGE DeriveDataTypeable #-}
@@ -8,23 +40,24 @@
 
 --------------------------------------------------------------------------------
 
-module Env ( setEnv
-           , getEnv
-           , envMaybe
-           , envRead
-           , read
+module Env
+  ( setEnv
+  , getEnv
+  , envMaybe
+  , envRead
+  , read
 
-           -- * Reexport several Readers from Data.Text
-           , decimal
-           , signed
-           , hexadecimal
-           , rational
-           , double
+    -- * Data types
+  , EnvironmentException(..)
 
-           -- * Data types
-           , EnvironmentException(..)
-           , Reader
-           ) where
+    -- * Reexport several Readers from Data.Text
+  , Reader
+  , decimal
+  , signed
+  , hexadecimal
+  , rational
+  , double
+  ) where
 
 --------------------------------------------------------------------------------
 
@@ -44,6 +77,7 @@ import           Text.Read              (readEither)
 --------------------------------------------------------------------------------
 -- EnvironmentException definition
 
+-- | Exceptions that can occur during reading the environment variable.
 newtype EnvironmentException =
   EnvVarNotFound Text
   deriving (Typeable)
@@ -58,7 +92,13 @@ instance Show EnvironmentException where
 
 -- | Set value of environment variable.
 --
--- Thorws IOException.
+-- Thorws 'IOException'.
+--
+-- >>> envMaybe "NAME"
+-- Nothing
+-- >>> setEnv "NAME" "Boris"
+-- >>> envMaybe "NAME"
+-- Just "Boris"
 setEnv :: (MonadThrow m, MonadIO m) => Text -> Text -> m ()
 setEnv k v = liftIO $ E.setEnv (unpack k) (unpack v)
 
@@ -67,7 +107,12 @@ setEnv k v = liftIO $ E.setEnv (unpack k) (unpack v)
 
 -- | Get value of environment variable.
 --
--- Throws EnvVariableNotFoundException.
+-- Throws 'EnvVarNotFound'.
+--
+-- >>> getEnv "NAME"
+-- *** Exception: Could not find value of $NAME in environment.
+-- >>> getEnv "HOME"
+-- "/Users/d12frosted"
 getEnv :: ( MonadThrow m, MonadIO m, IsString a ) => Text -> m a
 getEnv key =
   envMaybe key >>=
@@ -76,10 +121,19 @@ getEnv key =
      Just v -> return v
 
 -- | Get value of environment variable.
+-- >>> getEnv "NAME"
+-- Nothing
+-- >>> getEnv "HOME"
+-- Just "/Users/d12frosted"
 envMaybe :: ( MonadIO m, IsString a ) => Text -> m (Maybe a)
 envMaybe key = liftIO $ fmap (fromString <$>) (E.lookupEnv (unpack key))
 
 -- | Get value of environment variable and parse it using specific reader.
+-- >>> setEnv "AGE" "12"
+-- >>> envMaybe "AGE"
+-- Just "12"
+-- >>> envRead decimal "AGE"
+-- Just 12
 envRead :: (MonadIO m) => Reader a -> Text -> m (Maybe a)
 envRead r = fmap (((fmap fst . fromRight) . r) =<<) . envMaybe
 

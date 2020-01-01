@@ -1,0 +1,18 @@
+name:                env-extra
+version:             0.1.1.0
+github:              d12frosted/env-extra
+license:             MIT
+author:              "Boris Buliga"
+maintainer:          "boris@d12frosted.io"
+copyright:           "2016-2020 Boris Buliga"
+
+description:         Please see the README on GitHub at <https://github.com/d12frosted/env-exta>
+
+dependencies:
+- base >= 4.7 && < 5
+- exceptions
+- text
+- transformers
+
+library:
+  source-dirs: src

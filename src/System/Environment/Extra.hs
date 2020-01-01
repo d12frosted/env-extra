@@ -1,6 +1,6 @@
 {-|
-Module      : System.Environment.Safe
-Description : Safe version of 'E.setEnv' and 'E.lookupEnv' with some bells.
+Module      : System.Environment.Extra
+Description : Safe helpers for accessing and modifying environment variables
 Copyright   : (c) Boris Buliga, 2016-2020
 License     : MIT
 Maintainer  : boris@d12frosted.io
@@ -40,7 +40,7 @@ Just 12
 
 --------------------------------------------------------------------------------
 
-module Env
+module System.Environment.Extra
   ( setEnv
   , getEnv
   , envMaybe

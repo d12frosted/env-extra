@@ -1,8 +1,8 @@
-* ~d12-hs-env~
+* ~env-extra~
 
 [[https://travis-ci.org/d12frosted/d12-hs-env.svg?branch=master][file:https://travis-ci.org/d12frosted/d12-hs-env.svg?branch=master]]
 
-Environment helpers that are used in personal projects.
+Safe helpers for accessing and modifying environment variables.
 
 Currently there is only one module =Env= that exposes two functions: ~env~ and
 ~envMaybe~.

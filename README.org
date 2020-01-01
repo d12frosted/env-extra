@@ -62,10 +62,13 @@ many scenarios. In the following example =getEnv= accepts =Text= value, while
 =putStrLn= accepts =String= value and =getEnv= chains in both cases.
 
 #+begin_src haskell
->>> getEnv "WHAAT" >>= getEnv
-"/Users/d12frosted"
+>>> setEnv "WHAAT" "HOME"
+>>> getEnv "WHAAT"
+"HOME"
 >>> getEnv "WHAAT" >>= putStrLn
 HOME
+>>> getEnv "WHAAT" >>= getEnv
+"/Users/d12frosted"
 #+end_src
 
 ** Using with ~stack~

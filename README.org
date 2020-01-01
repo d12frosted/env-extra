@@ -75,13 +75,5 @@ Just add =env-extra= to =stack.yaml= file.
 #+BEGIN_SRC yaml
   extra-deps:
   - git: https://github.com/d12frosted/env-extra
-    commit: 02bb5f25e82d63e6d1e0106c2ef3e382a7e5d358
-#+END_SRC
-
-Or you can use the specific version
-
-#+BEGIN_SRC yaml
-  extra-deps:
-  - git: https://github.com/d12frosted/env-extra
-    commit: v1.0.0.0
+    commit: 78eba1d8299be64721a96178425bf6c66776f573
 #+END_SRC

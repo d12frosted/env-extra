@@ -8,7 +8,10 @@ copyright:           "2016-2020 Boris Buliga"
 category:            System
 synopsis:            Safe helpers for accessing and modifying environment variables
 
-description:         Please see the README on GitHub at <https://github.com/d12frosted/env-exta>
+description:         Please see the README on GitHub at <https://github.com/d12frosted/env-extra>
+
+extra-source-files:
+- CHANGELOG.org
 
 dependencies:
 - base >= 4.7 && < 5

@@ -1,6 +1,7 @@
 * ~env-extra~
 
-[[https://github.com/d12frosted/env-extra/workflows/CI/badge.svg][file:https://github.com/d12frosted/env-extra/workflows/CI/badge.svg]]
+[[https://github.com/d12frosted/env-extra/workflows/CI/badge.svg]]
+[[https://hackage.haskell.org/package/env-extra][https://img.shields.io/hackage/v/env-extra.svg]]
 
 Safe helpers for accessing and modifying environment variables.
 

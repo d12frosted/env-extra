@@ -45,7 +45,6 @@ test-suite env-extra-test
       Paths_env_extra
   hs-source-dirs:
       test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , env-extra

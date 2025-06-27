@@ -24,7 +24,8 @@ import           Test.Tasty.HUnit
 main :: IO ()
 main
   = defaultMain
-  $ testGroup "env extra"
+  -- don't execute setEnv in parallel
+  $ sequentialTestGroup "env extra" AllFinish
   [ testCase "return Nothing when variable is not set" $
     envMaybe "DEFINITELY_NOT_SET" >>= (@?= Nothing)
 

@@ -1,3 +1,9 @@
+#+begin_html
+<p align="center">
+  <a href="https://github.com/sponsors/d12frosted"><img alt="Sponsor" src="https://img.shields.io/badge/Sponsor-d12frosted-pink?logo=githubsponsors&logoColor=white"/></a>
+</p>
+#+end_html
+
 * ~env-extra~
 
 [[https://github.com/d12frosted/env-extra/workflows/CI/badge.svg]]
@@ -81,3 +87,7 @@ Just add =env-extra= to =stack.yaml= file.
   - git: https://github.com/d12frosted/env-extra
     commit: 78eba1d8299be64721a96178425bf6c66776f573
 #+END_SRC
+
+* Support
+
+If you enjoy this project, you can support its development via [[https://github.com/sponsors/d12frosted][GitHub Sponsors]] or [[https://www.patreon.com/d12frosted][Patreon]].
